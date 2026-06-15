@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Harshavardhan Reddy Kaditham — AI/ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090f;--bg2:#0d1017;--bg3:#131720;
+  --border:rgba(255,255,255,0.06);--border-h:rgba(255,255,255,0.12);
+  --text:#eef0f6;--ts:#7a8099;--tm:#363d52;
+  --cyan:#06B6D4;--purple:#818cf8;--pink:#f472b6;
+  --cy-dim:rgba(6,182,212,0.1);--pu-dim:rgba(129,140,248,0.1);
+  --font:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── CANVAS ── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── ORBS ── */
+.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.orb1{width:500px;height:500px;background:rgba(6,182,212,0.07);top:-100px;right:-100px;animation:drift1 18s ease-in-out infinite}
+.orb2{width:400px;height:400px;background:rgba(129,140,248,0.07);bottom:-80px;left:-80px;animation:drift2 22s ease-in-out infinite}
+.orb3{width:300px;height:300px;background:rgba(244,114,182,0.05);top:40%;left:50%;animation:drift3 26s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(-40px,60px)}}
+@keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,-40px)}}
+@keyframes drift3{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(calc(-50% + 30px),calc(-50% + 40px))}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:62px;background:rgba(7,9,15,0.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:border-color .3s}
+nav.scrolled{border-color:rgba(6,182,212,0.15)}
+.nav-logo{font-family:var(--mono);font-size:13px;color:var(--cyan);letter-spacing:.06em;text-decoration:none;display:flex;align-items:center;gap:.5rem}
+.nav-logo-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse-dot 2s ease infinite}
+@keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(6,182,212,.4)}50%{box-shadow:0 0 0 6px rgba(6,182,212,0)}}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--ts);text-decoration:none;font-size:13px;letter-spacing:.02em;transition:color .2s;position:relative;padding-bottom:2px}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--cyan);transform:scaleX(0);transition:transform .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{transform:scaleX(1)}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:1;padding:8rem 2.5rem 5rem;max-width:1040px;margin:0 auto}
+.section-label{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.14em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.75rem}
+.section-label::after{content:'';flex:1;max-width:60px;height:1px;background:linear-gradient(90deg,var(--cyan),transparent)}
+h2.section-title{font-size:2.2rem;font-weight:700;letter-spacing:-.03em;margin-bottom:.5rem;background:linear-gradient(135deg,var(--text) 60%,var(--ts));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-sub{color:var(--ts);font-size:14px;margin-bottom:3rem}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding-top:6rem}
+.hero-left{}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .9rem;border-radius:100px;border:1px solid rgba(6,182,212,.25);background:rgba(6,182,212,.07);font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.06em;margin-bottom:1.75rem;opacity:0;animation:fadeUp .6s ease forwards .2s}
+.badge-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);animation:pulse-dot 1.5s ease infinite}
+.hero-name{font-size:clamp(2rem,4vw,3.2rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:.75rem;opacity:0;animation:fadeUp .6s ease forwards .4s}
+.hero-name .accent{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-typed-wrap{font-size:1.1rem;font-weight:300;color:var(--ts);margin-bottom:1.75rem;opacity:0;animation:fadeUp .6s ease forwards .6s;min-height:1.8rem}
+.hero-typed-wrap .typed-cursor{color:var(--cyan);animation:blink 1s step-end infinite}
+.hero-desc{max-width:480px;color:var(--ts);font-size:14.5px;line-height:1.85;margin-bottom:2.25rem;opacity:0;animation:fadeUp .6s ease forwards .8s}
+.hero-cta{display:flex;gap:.75rem;flex-wrap:wrap;opacity:0;animation:fadeUp .6s ease forwards 1s}
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.4rem;border-radius:8px;font-size:13px;font-family:var(--font);cursor:pointer;text-decoration:none;transition:all .25s;letter-spacing:.02em;font-weight:500}
+.btn-primary{background:var(--cyan);color:#000;border:none}
+.btn-primary:hover{background:#22d3ee;transform:translateY(-2px);box-shadow:0 8px 28px rgba(6,182,212,.35)}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-h)}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px)}
+
+/* ── HERO VISUAL ── */
+.hero-visual{opacity:0;animation:fadeIn .8s ease forwards 1.2s;position:relative;display:flex;align-items:center;justify-content:center}
+.hero-svg-wrap{width:100%;max-width:420px;position:relative}
+.hero-svg-wrap svg{width:100%;height:auto}
+/* floating cards on hero */
+.float-card{position:absolute;background:rgba(13,16,23,.9);border:1px solid var(--border-h);border-radius:10px;padding:.7rem 1rem;font-family:var(--mono);font-size:11px;backdrop-filter:blur(10px)}
+.fc1{top:8%;left:-5%;animation:floatY 4s ease-in-out infinite}
+.fc2{bottom:18%;right:-8%;animation:floatY 5s ease-in-out infinite .8s}
+.fc3{top:45%;left:-10%;animation:floatY 6s ease-in-out infinite 1.4s}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.fc-label{color:var(--ts);font-size:10px;margin-bottom:.25rem;letter-spacing:.06em}
+.fc-value{color:var(--cyan);font-size:13px;font-weight:500}
+.fc-bar{display:flex;gap:3px;margin-top:.35rem}
+.fc-bar span{height:3px;border-radius:2px;background:var(--cyan);opacity:.3}
+.fc-bar span.on{opacity:1}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.about-text p{color:var(--ts);margin-bottom:1rem;line-height:1.85}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.stat-box{background:var(--bg2);padding:1.5rem;transition:background .2s;cursor:pointer}
+.stat-box:hover{background:var(--bg3)}
+.stat-num{font-size:2rem;font-weight:700;color:var(--cyan);font-family:var(--mono);line-height:1;margin-bottom:.4rem}
+.stat-label{font-size:11px;color:var(--tm);letter-spacing:.04em}
+
+/* ── PROJECTS ── */
+.projects-grid{display:grid;gap:1px;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.project-card{background:var(--bg2);padding:2rem;transition:background .25s;position:relative;overflow:hidden;cursor:pointer}
+.project-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--purple));opacity:0;transition:opacity .25s;pointer-events:none}
+.project-card::after{content:'';position:absolute;inset:0;background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%),rgba(6,182,212,.05),transparent 50%);opacity:0;transition:opacity .3s;pointer-events:none}
+.project-card:hover{background:var(--bg3)}
+.project-card:hover::before{opacity:1}
+.project-card:hover::after{opacity:1}
+
+/* project visual strip */
+.project-fig{width:100%;height:90px;border-radius:8px;margin-bottom:1.25rem;overflow:hidden;position:relative;border:1px solid var(--border)}
+.project-fig svg{width:100%;height:100%}
+
+.project-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.6rem}
+.project-name{font-size:15px;font-weight:600;color:var(--text)}
+.project-links a{display:inline-flex;align-items:center;gap:.3rem;color:var(--ts);text-decoration:none;font-size:11px;font-family:var(--mono);padding:.3rem .7rem;border-radius:5px;border:1px solid var(--border-h);transition:all .2s;letter-spacing:.03em}
+.project-links a:hover{color:var(--cyan);border-color:var(--cyan);background:rgba(6,182,212,.06)}
+.project-desc{color:var(--ts);font-size:13.5px;line-height:1.7;margin-bottom:1rem}
+.project-tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.tag{font-family:var(--mono);font-size:10.5px;padding:3px 8px;border-radius:4px;background:rgba(6,182,212,.06);color:var(--cyan);border:1px solid rgba(6,182,212,.16);letter-spacing:.04em;transition:background .2s}
+.tag:hover{background:rgba(6,182,212,.14)}
+.tag.purple{background:rgba(129,140,248,.06);color:var(--purple);border-color:rgba(129,140,248,.2)}
+.tag.pink{background:rgba(244,114,182,.06);color:var(--pink);border-color:rgba(244,114,182,.2)}
+
+/* ── SKILLS ── */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.skill-group{background:var(--bg2);padding:1.5rem;transition:background .2s}
+.skill-group:hover{background:var(--bg3)}
+.sg-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem;font-size:16px}
+.sg-icon svg{width:18px;height:18px}
+.skill-group-title{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.9rem}
+.skill-item{font-size:13px;color:var(--ts);display:flex;align-items:center;gap:.5rem;margin-bottom:.45rem;transition:color .2s}
+.skill-item:hover{color:var(--text)}
+.skill-item::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--cyan);flex-shrink:0;opacity:.4}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,var(--cyan),var(--purple),transparent)}
+.timeline-item{position:relative;margin-bottom:3rem;opacity:0;transform:translateX(-14px);transition:opacity .5s ease,transform .5s ease}
+.timeline-item.visible{opacity:1;transform:translateX(0)}
+.timeline-item::before{content:'';position:absolute;left:-2rem;top:8px;width:8px;height:8px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan);margin-left:-4px;box-shadow:0 0 0 3px rgba(6,182,212,.12),0 0 14px rgba(6,182,212,.4)}
+.timeline-period{font-family:var(--mono);font-size:11px;color:var(--tm);letter-spacing:.06em;margin-bottom:.4rem}
+.timeline-role{font-size:15px;font-weight:600;margin-bottom:.2rem}
+.timeline-org{font-size:13px;color:var(--cyan);margin-bottom:.75rem;display:flex;align-items:center;gap:.4rem}
+.timeline-org::before{content:'@';color:var(--tm);font-family:var(--mono);font-size:11px}
+.timeline-points{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.timeline-points li{font-size:13px;color:var(--ts);padding-left:1rem;position:relative;line-height:1.6}
+.timeline-points li::before{content:'—';position:absolute;left:0;color:var(--tm)}
+
+
+/* ── RESUME ── */
+.resume-box{display:flex;align-items:center;justify-content:space-between;gap:2rem;background:var(--bg2);border:1px solid var(--border-h);border-radius:14px;padding:1.75rem 2rem;margin-bottom:1rem;flex-wrap:wrap}
+.resume-preview{display:flex;align-items:center;gap:1.25rem}
+.resume-icon{width:52px;height:52px;border-radius:12px;background:var(--cy-dim);border:1px solid rgba(6,182,212,.2);display:flex;align-items:center;justify-content:center;color:var(--cyan);flex-shrink:0}
+.resume-name{font-size:14px;font-weight:500;color:var(--text);margin-bottom:.25rem;font-family:var(--mono)}
+.resume-meta{font-size:12px;color:var(--tm);letter-spacing:.04em}
+.resume-actions{display:flex;gap:.75rem;flex-shrink:0}
+.resume-note{font-size:12px;color:var(--tm);margin-top:.75rem}
+
+/* ── CONTACT ── */
+#contact{display:flex;flex-direction:column;justify-content:center}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:2rem}
+.contact-item{background:var(--bg2);padding:1.5rem;text-decoration:none;display:flex;align-items:center;gap:1rem;transition:background .2s;color:inherit}
+.contact-item:hover{background:var(--bg3)}
+.contact-item:hover .ci-icon{box-shadow:0 0 20px rgba(6,182,212,.3)}
+.ci-icon{width:38px;height:38px;border-radius:10px;background:var(--cy-dim);border:1px solid rgba(6,182,212,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:box-shadow .25s}
+.ci-icon svg{width:16px;height:16px;stroke:var(--cyan);fill:none;stroke-width:1.5}
+.ci-label{font-size:10px;color:var(--tm);font-family:var(--mono);letter-spacing:.06em;margin-bottom:.2rem;text-transform:uppercase}
+.ci-value{font-size:13px;color:var(--text)}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:2rem 2.5rem;text-align:center;font-size:11px;color:var(--tm);font-family:var(--mono);letter-spacing:.06em}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.fade-in{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.fd1{transition-delay:.08s}.fd2{transition-delay:.16s}.fd3{transition-delay:.24s}
+
+@media(max-width:768px){
+  #hero{grid-template-columns:1fr;min-height:auto;padding-top:7rem}
+  .hero-visual{display:none}
+  .about-grid{grid-template-columns:1fr;gap:2.5rem}
+  section{padding:6rem 1.25rem 4rem}
+  nav{padding:0 1.25rem}
+  .nav-links{gap:1.25rem}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .fade-in,.timeline-item{opacity:1;transform:none}
+  .hero-name,.hero-badge,.hero-typed-wrap,.hero-desc,.hero-cta,.hero-visual{opacity:1}
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+<canvas id="bg-canvas"></canvas>
+
+<nav id="main-nav">
+  <a href="#hero" class="nav-logo"><span class="nav-logo-dot"></span>HRK.dev</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#resume">Resume</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><span class="badge-dot"></span>Open to AI/ML roles &nbsp;·&nbsp; IU Bloomington MS '26</div>
+    <h1 class="hero-name">Harshavardhan<br><span class="accent">Reddy Kaditham</span></h1>
+    <div class="hero-typed-wrap"><span id="typed-text"></span><span class="typed-cursor">|</span></div>
+    <p class="hero-desc">MS in Data Science at Indiana University Bloomington. I build LLM-powered applications, fine-tune language models, and design agentic AI systems — focused on taking models from experiment to working product.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      <a href="https://github.com/Harsha85018" class="btn btn-ghost">GitHub ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-svg-wrap">
+      <!-- Central AI brain illustration -->
+      <svg viewBox="0 0 420 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="coreGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#06B6D4" stop-opacity=".18"/>
+            <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="ringGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#818cf8" stop-opacity=".12"/>
+            <stop offset="100%" stop-color="#818cf8" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Outer glow rings -->
+        <circle cx="210" cy="210" r="180" fill="url(#ringGrad)"/>
+        <circle cx="210" cy="210" r="170" stroke="rgba(129,140,248,.08)" stroke-width="1"/>
+        <circle cx="210" cy="210" r="140" stroke="rgba(6,182,212,.06)" stroke-width="1" stroke-dasharray="4 8"/>
+        <circle cx="210" cy="210" r="110" fill="url(#coreGrad)"/>
+
+        <!-- Orbit ring animated -->
+        <circle cx="210" cy="210" r="120" stroke="rgba(6,182,212,.12)" stroke-width="1" stroke-dasharray="6 6">
+          <animateTransform attributeName="transform" type="rotate" from="0 210 210" to="360 210 210" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="210" cy="210" r="155" stroke="rgba(129,140,248,.08)" stroke-width="1" stroke-dasharray="3 10">
+          <animateTransform attributeName="transform" type="rotate" from="360 210 210" to="0 210 210" dur="30s" repeatCount="indefinite"/>
+        </circle>
+
+        <!-- Orbiting dots on ring -->
+        <g>
+          <circle cx="330" cy="210" r="5" fill="#06B6D4" filter="url(#glow)">
+            <animateTransform attributeName="transform" type="rotate" from="0 210 210" to="360 210 210" dur="20s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+        <g>
+          <circle cx="90" cy="210" r="4" fill="#818cf8" filter="url(#glow)">
+            <animateTransform attributeName="transform" type="rotate" from="120 210 210" to="480 210 210" dur="20s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+        <g>
+          <circle cx="210" cy="90" r="3.5" fill="#f472b6" filter="url(#glow)">
+            <animateTransform attributeName="transform" type="rotate" from="240 210 210" to="600 210 210" dur="20s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- Neural network nodes -->
+        <!-- Layer 1 (input) -->
+        <circle cx="120" cy="160" r="7" fill="rgba(6,182,212,.15)" stroke="#06B6D4" stroke-width="1.5"/>
+        <circle cx="120" cy="210" r="7" fill="rgba(6,182,212,.15)" stroke="#06B6D4" stroke-width="1.5"/>
+        <circle cx="120" cy="260" r="7" fill="rgba(6,182,212,.15)" stroke="#06B6D4" stroke-width="1.5"/>
+
+        <!-- Layer 2 (hidden) -->
+        <circle cx="180" cy="145" r="7" fill="rgba(129,140,248,.15)" stroke="#818cf8" stroke-width="1.5"/>
+        <circle cx="180" cy="190" r="7" fill="rgba(129,140,248,.15)" stroke="#818cf8" stroke-width="1.5"/>
+        <circle cx="180" cy="235" r="7" fill="rgba(129,140,248,.15)" stroke="#818cf8" stroke-width="1.5"/>
+        <circle cx="180" cy="278" r="7" fill="rgba(129,140,248,.15)" stroke="#818cf8" stroke-width="1.5"/>
+
+        <!-- Layer 3 (hidden) -->
+        <circle cx="240" cy="160" r="7" fill="rgba(129,140,248,.15)" stroke="#818cf8" stroke-width="1.5"/>
+        <circle cx="240" cy="210" r="7" fill="rgba(129,140,248,.15)" stroke="#818cf8" stroke-width="1.5"/>
+        <circle cx="240" cy="258" r="7" fill="rgba(129,140,248,.15)" stroke="#818cf8" stroke-width="1.5"/>
+
+        <!-- Layer 4 (output) -->
+        <circle cx="300" cy="175" r="7" fill="rgba(244,114,182,.15)" stroke="#f472b6" stroke-width="1.5"/>
+        <circle cx="300" cy="245" r="7" fill="rgba(244,114,182,.15)" stroke="#f472b6" stroke-width="1.5"/>
+
+        <!-- Connections L1→L2 -->
+        <line x1="127" y1="160" x2="173" y2="145" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+        <line x1="127" y1="160" x2="173" y2="190" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+        <line x1="127" y1="210" x2="173" y2="145" stroke="rgba(6,182,212,.1)" stroke-width="1"/>
+        <line x1="127" y1="210" x2="173" y2="190" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+        <line x1="127" y1="210" x2="173" y2="235" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+        <line x1="127" y1="260" x2="173" y2="235" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+        <line x1="127" y1="260" x2="173" y2="278" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+        <line x1="127" y1="160" x2="173" y2="235" stroke="rgba(6,182,212,.07)" stroke-width="1"/>
+
+        <!-- Connections L2→L3 -->
+        <line x1="187" y1="145" x2="233" y2="160" stroke="rgba(129,140,248,.15)" stroke-width="1"/>
+        <line x1="187" y1="190" x2="233" y2="160" stroke="rgba(129,140,248,.12)" stroke-width="1"/>
+        <line x1="187" y1="190" x2="233" y2="210" stroke="rgba(129,140,248,.15)" stroke-width="1"/>
+        <line x1="187" y1="235" x2="233" y2="210" stroke="rgba(129,140,248,.15)" stroke-width="1"/>
+        <line x1="187" y1="235" x2="233" y2="258" stroke="rgba(129,140,248,.15)" stroke-width="1"/>
+        <line x1="187" y1="278" x2="233" y2="258" stroke="rgba(129,140,248,.12)" stroke-width="1"/>
+        <line x1="187" y1="145" x2="233" y2="210" stroke="rgba(129,140,248,.07)" stroke-width="1"/>
+        <line x1="187" y1="278" x2="233" y2="210" stroke="rgba(129,140,248,.07)" stroke-width="1"/>
+
+        <!-- Connections L3→L4 -->
+        <line x1="247" y1="160" x2="293" y2="175" stroke="rgba(244,114,182,.18)" stroke-width="1"/>
+        <line x1="247" y1="210" x2="293" y2="175" stroke="rgba(244,114,182,.12)" stroke-width="1"/>
+        <line x1="247" y1="210" x2="293" y2="245" stroke="rgba(244,114,182,.18)" stroke-width="1"/>
+        <line x1="247" y1="258" x2="293" y2="245" stroke="rgba(244,114,182,.18)" stroke-width="1"/>
+        <line x1="247" y1="160" x2="293" y2="245" stroke="rgba(244,114,182,.07)" stroke-width="1"/>
+
+        <!-- Animated signal pulses -->
+        <circle r="3" fill="#06B6D4" opacity=".9" filter="url(#glow)">
+          <animateMotion dur="2s" repeatCount="indefinite" begin="0s">
+            <mpath href="#path1"/>
+          </animateMotion>
+        </circle>
+        <circle r="3" fill="#818cf8" opacity=".9" filter="url(#glow)">
+          <animateMotion dur="2s" repeatCount="indefinite" begin=".7s">
+            <mpath href="#path2"/>
+          </animateMotion>
+        </circle>
+        <circle r="3" fill="#f472b6" opacity=".9" filter="url(#glow)">
+          <animateMotion dur="2s" repeatCount="indefinite" begin="1.4s">
+            <mpath href="#path3"/>
+          </animateMotion>
+        </circle>
+
+        <defs>
+          <path id="path1" d="M120,160 L180,190 L240,210 L300,175"/>
+          <path id="path2" d="M120,210 L180,235 L240,258 L300,245"/>
+          <path id="path3" d="M120,260 L180,278 L240,258 L300,245"/>
+        </defs>
+
+        <!-- Center label -->
+        <text x="210" y="388" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" fill="rgba(6,182,212,.5)" letter-spacing="2">NEURAL NETWORK</text>
+      </svg>
+
+      <!-- Floating stat cards -->
+      <div class="float-card fc1">
+        <div class="fc-label">COFFEE / DAY</div>
+        <div class="fc-value">3 ☕</div>
+        <div class="fc-bar">
+          <span class="on" style="width:22px"></span>
+          <span class="on" style="width:16px"></span>
+          <span class="on" style="width:20px"></span>
+          <span style="width:12px"></span>
+          <span style="width:10px"></span>
+        </div>
+      </div>
+      <div class="float-card fc2">
+        <div class="fc-label">BUGS FIXED AT</div>
+        <div class="fc-value">2AM 🌙</div>
+        <div class="fc-bar">
+          <span class="on" style="width:28px"></span>
+          <span class="on" style="width:20px"></span>
+          <span style="width:14px"></span>
+        </div>
+      </div>
+      <div class="float-card fc3">
+        <div class="fc-label">TABS OPEN RN</div>
+        <div class="fc-value" style="color:#818cf8">47 🤯</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ABOUT ═══════════════════ -->
+<section id="about">
+  <p class="section-label fade-in">01 — About</p>
+  <h2 class="section-title fade-in fd1">A bit about me</h2>
+  <p class="section-sub fade-in fd2">AI/ML engineering by day, side projects by night.</p>
+  <div class="about-grid">
+    <div class="about-text fade-in fd1">
+      <p>I'm Harshavardhan Reddy Kaditham — an AI/ML Engineer with a Master's in Data Science from Indiana University Bloomington (GPA 3.57) and a background in Computer Science from VTU, where I graduated with a CGPA of 8.55.</p>
+      <p>My work spans the full ML lifecycle — from building RAG pipelines and fine-tuning LLMs with LoRA/QLoRA, to designing multi-step agentic systems using LangGraph. I've shipped end-to-end AI systems that handle real unstructured data, generate structured outputs, and run autonomously without human intervention between steps.</p>
+      <p>I've interned at two AI-focused companies where I built NLP and computer vision pipelines in production settings, reducing manual workflows by up to 30%. I move fast, pick up new tools quickly, and care deeply about building things that actually work beyond the demo.</p>
+    </div>
+    <div class="fade-in fd2">
+      <div class="about-stats">
+        <div class="stat-box"><div class="stat-num">3.57</div><div class="stat-label">GPA at IU Bloomington</div></div>
+        <div class="stat-box"><div class="stat-num">3+</div><div class="stat-label">AI/ML projects built</div></div>
+        <div class="stat-box"><div class="stat-num">2</div><div class="stat-label">Industry internships</div></div>
+        <div class="stat-box"><div class="stat-num">8.55</div><div class="stat-label">CGPA — VTU</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROJECTS ═══════════════════ -->
+<section id="projects">
+  <p class="section-label fade-in">02 — Projects</p>
+  <h2 class="section-title fade-in fd1">What I've built</h2>
+  <p class="section-sub fade-in fd2">Three end-to-end AI systems covering RAG, fine-tuning, and agentic tool use.</p>
+  <div class="projects-grid fade-in fd1">
+
+    <!-- Project 1 -->
+    <div class="project-card">
+      <div class="project-fig">
+        <svg viewBox="0 0 600 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="90" fill="#0d1017"/>
+          <!-- Pipeline flow diagram -->
+          <!-- Step boxes -->
+          <rect x="20" y="25" width="80" height="40" rx="6" fill="rgba(6,182,212,.1)" stroke="rgba(6,182,212,.3)" stroke-width="1"/>
+          <text x="60" y="48" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06B6D4">PDF Input</text>
+          <!-- Arrow -->
+          <line x1="102" y1="45" x2="124" y2="45" stroke="rgba(6,182,212,.4)" stroke-width="1.5"/>
+          <polygon points="124,41 132,45 124,49" fill="rgba(6,182,212,.4)"/>
+          <rect x="132" y="25" width="80" height="40" rx="6" fill="rgba(6,182,212,.1)" stroke="rgba(6,182,212,.3)" stroke-width="1"/>
+          <text x="172" y="41" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06B6D4">Embed</text>
+          <text x="172" y="55" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06B6D4">FAISS</text>
+          <!-- Arrow -->
+          <line x1="214" y1="45" x2="236" y2="45" stroke="rgba(6,182,212,.4)" stroke-width="1.5"/>
+          <polygon points="236,41 244,45 236,49" fill="rgba(6,182,212,.4)"/>
+          <rect x="244" y="25" width="80" height="40" rx="6" fill="rgba(129,140,248,.1)" stroke="rgba(129,140,248,.3)" stroke-width="1"/>
+          <text x="284" y="41" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8">RAG</text>
+          <text x="284" y="55" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8">Retrieval</text>
+          <!-- Arrow -->
+          <line x1="326" y1="45" x2="348" y2="45" stroke="rgba(129,140,248,.4)" stroke-width="1.5"/>
+          <polygon points="348,41 356,45 348,49" fill="rgba(129,140,248,.4)"/>
+          <rect x="356" y="25" width="80" height="40" rx="6" fill="rgba(129,140,248,.1)" stroke="rgba(129,140,248,.3)" stroke-width="1"/>
+          <text x="396" y="41" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8">LLM</text>
+          <text x="396" y="55" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8">Rank</text>
+          <!-- Arrow -->
+          <line x1="438" y1="45" x2="460" y2="45" stroke="rgba(244,114,182,.4)" stroke-width="1.5"/>
+          <polygon points="460,41 468,45 460,49" fill="rgba(244,114,182,.4)"/>
+          <rect x="468" y="25" width="112" height="40" rx="6" fill="rgba(244,114,182,.08)" stroke="rgba(244,114,182,.25)" stroke-width="1"/>
+          <text x="524" y="41" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#f472b6">Score +</text>
+          <text x="524" y="55" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#f472b6">Gap Report</text>
+          <!-- animated dot -->
+          <circle r="4" fill="#06B6D4" opacity=".85">
+            <animateMotion dur="3s" repeatCount="indefinite">
+              <mpath href="#pipe1"/>
+            </animateMotion>
+          </circle>
+          <path id="pipe1" d="M20,45 L580,45" fill="none"/>
+        </svg>
+      </div>
+      <div class="project-header">
+        <span class="project-name">AI Resume Screener with LLMs</span>
+        <div class="project-links"><a href="https://github.com/Harsha85018/Ai-Resume-Screener-LLM">GitHub ↗</a></div>
+      </div>
+      <p class="project-desc">End-to-end resume evaluation pipeline using RAG and FAISS vector search. Parses unstructured PDFs, embeds them against job descriptions, and returns ranked candidates with gap analysis via a Streamlit interface.</p>
+      <div class="project-tags">
+        <span class="tag">LangChain</span><span class="tag">RAG</span><span class="tag">FAISS</span><span class="tag">OpenAI API</span><span class="tag">Streamlit</span><span class="tag">Python</span>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="project-card">
+      <div class="project-fig">
+        <svg viewBox="0 0 600 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="90" fill="#0d1017"/>
+          <!-- Fine-tuning visual: before/after bars -->
+          <text x="20" y="20" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(129,140,248,.6)">BASE MODEL</text>
+          <rect x="20" y="25" width="160" height="12" rx="3" fill="rgba(255,255,255,.04)" stroke="rgba(129,140,248,.15)" stroke-width="1"/>
+          <rect x="20" y="25" width="90" height="12" rx="3" fill="rgba(129,140,248,.25)"/>
+          <text x="118" y="35" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(129,140,248,.7)">56%</text>
+
+          <text x="20" y="52" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(6,182,212,.6)">FINE-TUNED</text>
+          <rect x="20" y="57" width="160" height="12" rx="3" fill="rgba(255,255,255,.04)" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+          <rect x="20" y="57" width="148" height="12" rx="3" fill="rgba(6,182,212,.3)">
+            <animate attributeName="width" from="20" to="148" dur="2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.2 1"/>
+          </rect>
+          <text x="175" y="67" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(6,182,212,.9)">+38%</text>
+
+          <!-- LoRA diagram on right -->
+          <text x="240" y="20" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,.3)">LoRA ADAPTER</text>
+          <rect x="240" y="25" width="60" height="55" rx="6" fill="rgba(129,140,248,.06)" stroke="rgba(129,140,248,.2)" stroke-width="1"/>
+          <text x="270" y="48" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#818cf8">W</text>
+          <text x="270" y="60" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="rgba(129,140,248,.5)">frozen</text>
+
+          <line x1="302" y1="52" x2="318" y2="52" stroke="rgba(6,182,212,.3)" stroke-width="1.5"/>
+          <text x="320" y="30" font-family="JetBrains Mono,monospace" font-size="8" fill="rgba(6,182,212,.5)">A</text>
+          <rect x="318" y="33" width="30" height="20" rx="4" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.25)" stroke-width="1"/>
+          <line x1="348" y1="43" x2="362" y2="43" stroke="rgba(6,182,212,.3)" stroke-width="1"/>
+          <rect x="362" y="33" width="30" height="20" rx="4" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.25)" stroke-width="1"/>
+          <text x="377" y="47" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="rgba(6,182,212,.5)">B</text>
+          <line x1="392" y1="43" x2="408" y2="52" stroke="rgba(6,182,212,.3)" stroke-width="1.5"/>
+          <text x="410" y="30" font-family="JetBrains Mono,monospace" font-size="8" fill="rgba(244,114,182,.5)">ΔW</text>
+          <rect x="408" y="33" width="40" height="20" rx="4" fill="rgba(244,114,182,.08)" stroke="rgba(244,114,182,.2)" stroke-width="1"/>
+          <text x="428" y="47" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="7" fill="#f472b6">trained</text>
+
+          <!-- 4-bit label -->
+          <rect x="458" y="55" width="120" height="20" rx="4" fill="rgba(6,182,212,.06)" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+          <text x="518" y="69" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(6,182,212,.7)">4-bit QLoRA</text>
+        </svg>
+      </div>
+      <div class="project-header">
+        <span class="project-name">Fine-Tuned LLM for Medical Text Summarization</span>
+        <div class="project-links"><a href="https://github.com/Harsha85018/llama-medical-summarizer">GitHub ↗</a></div>
+      </div>
+      <p class="project-desc">Fine-tuned a LLaMA-based model on 10K+ clinical notes using LoRA and QLoRA, reducing trainable parameters by 90% while hitting a ROUGE-L of 0.43 on medical summarization benchmarks. Built a full HuggingFace + PyTorch training pipeline with custom tokenization and evaluation loops. Deployed as a Gradio interface for real-time discharge summary generation from unstructured patient records.</p>
+      <div class="project-tags">
+        <span class="tag purple">LLaMA</span><span class="tag purple">LoRA</span><span class="tag purple">QLoRA</span><span class="tag purple">Hugging Face</span><span class="tag">Gradio</span><span class="tag">Google Colab</span>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="project-card">
+      <div class="project-fig">
+        <svg viewBox="0 0 600 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="90" fill="#0d1017"/>
+          <!-- Agentic loop diagram -->
+          <text x="300" y="14" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(255,255,255,.25)">LANGGRAPH AGENT LOOP</text>
+          <!-- Nodes in a loop -->
+          <!-- User -->
+          <rect x="20" y="30" width="70" height="30" rx="6" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.25)" stroke-width="1"/>
+          <text x="55" y="49" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06B6D4">CSV Input</text>
+          <!-- Arrow right -->
+          <line x1="92" y1="45" x2="112" y2="45" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <polygon points="112,41.5 119,45 112,48.5" fill="rgba(255,255,255,.15)"/>
+          <!-- Planner -->
+          <rect x="119" y="30" width="70" height="30" rx="6" fill="rgba(129,140,248,.1)" stroke="rgba(129,140,248,.3)" stroke-width="1"/>
+          <text x="154" y="49" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8">Planner</text>
+          <!-- Arrow down -->
+          <line x1="154" y1="62" x2="154" y2="72" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+          <!-- Tool Executor -->
+          <rect x="119" y="72" width="70" height="15" rx="4" fill="rgba(244,114,182,.06)" stroke="rgba(244,114,182,.2)" stroke-width="1"/>
+          <text x="154" y="83" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#f472b6">Tool Call</text>
+          <!-- Arrow back up to executor -->
+          <line x1="191" y1="45" x2="211" y2="45" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <polygon points="211,41.5 218,45 211,48.5" fill="rgba(255,255,255,.15)"/>
+          <!-- Executor -->
+          <rect x="218" y="30" width="80" height="30" rx="6" fill="rgba(244,114,182,.08)" stroke="rgba(244,114,182,.2)" stroke-width="1"/>
+          <text x="258" y="42" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#f472b6">Code</text>
+          <text x="258" y="55" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#f472b6">Executor</text>
+          <!-- Loop arrow back -->
+          <path d="M298,45 Q330,45 330,25 Q330,10 258,10 Q186,10 154,30" stroke="rgba(129,140,248,.2)" stroke-width="1" fill="none" stroke-dasharray="4 4"/>
+          <polygon points="154,30 149,22 159,22" fill="rgba(129,140,248,.2)"/>
+          <!-- Arrow forward -->
+          <line x1="300" y1="45" x2="320" y2="45" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <polygon points="320,41.5 327,45 320,48.5" fill="rgba(255,255,255,.15)"/>
+          <!-- Insight -->
+          <rect x="327" y="30" width="80" height="30" rx="6" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.2)" stroke-width="1"/>
+          <text x="367" y="42" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#06B6D4">Insight</text>
+          <text x="367" y="55" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#06B6D4">+ Chart</text>
+          <!-- Arrow -->
+          <line x1="409" y1="45" x2="429" y2="45" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+          <polygon points="429,41.5 436,45 429,48.5" fill="rgba(255,255,255,.15)"/>
+          <!-- Output -->
+          <rect x="436" y="30" width="140" height="30" rx="6" fill="rgba(6,182,212,.06)" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+          <text x="506" y="49" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(6,182,212,.7)">Streamlit Report</text>
+          <!-- animated pulse -->
+          <circle r="3.5" fill="#818cf8" opacity=".8">
+            <animateMotion dur="4s" repeatCount="indefinite">
+              <mpath href="#agentloop"/>
+            </animateMotion>
+          </circle>
+          <path id="agentloop" d="M20,45 L580,45" fill="none"/>
+        </svg>
+      </div>
+      <div class="project-header">
+        <span class="project-name">AI Data Analyst Agent</span>
+        <div class="project-links"><a href="https://github.com/Harsha85018/ai-data-analyst-agent">GitHub ↗</a></div>
+      </div>
+      <p class="project-desc">Agentic data analysis system built on LangGraph. Accepts a CSV, plans its own analysis steps, executes Python code through a tool-calling loop, and returns insights with visualizations — no human intervention between steps.</p>
+      <div class="project-tags">
+        <span class="tag pink">LangGraph</span><span class="tag pink">Tool Calling</span><span class="tag">OpenAI API</span><span class="tag">Pandas</span><span class="tag">Streamlit</span><span class="tag">Python</span>
+      </div>
+    </div>
+
+
+    <!-- Project 4 -->
+    <div class="project-card">
+      <div class="project-fig">
+        <svg viewBox="0 0 600 90" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="90" fill="#0d1017"/>
+          <!-- Health data inputs -->
+          <text x="20" y="14" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(244,114,182,.6)">PATIENT DATA</text>
+          <rect x="20" y="20" width="100" height="14" rx="3" fill="rgba(244,114,182,.08)" stroke="rgba(244,114,182,.2)" stroke-width="1"/>
+          <text x="70" y="31" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#f472b6">Age / BMI</text>
+          <rect x="20" y="38" width="100" height="14" rx="3" fill="rgba(244,114,182,.08)" stroke="rgba(244,114,182,.2)" stroke-width="1"/>
+          <text x="70" y="49" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#f472b6">Glucose</text>
+          <rect x="20" y="56" width="100" height="14" rx="3" fill="rgba(244,114,182,.08)" stroke="rgba(244,114,182,.2)" stroke-width="1"/>
+          <text x="70" y="67" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="#f472b6">Hypertension</text>
+          <!-- Arrow -->
+          <line x1="122" y1="45" x2="150" y2="45" stroke="rgba(244,114,182,.3)" stroke-width="1.5"/>
+          <polygon points="150,41 158,45 150,49" fill="rgba(244,114,182,.3)"/>
+          <!-- ML model box -->
+          <rect x="158" y="20" width="110" height="50" rx="6" fill="rgba(129,140,248,.08)" stroke="rgba(129,140,248,.25)" stroke-width="1"/>
+          <text x="213" y="40" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#818cf8">Decision Tree</text>
+          <text x="213" y="54" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="rgba(129,140,248,.5)">+ SMOTE</text>
+          <!-- Arrow -->
+          <line x1="270" y1="45" x2="298" y2="45" stroke="rgba(129,140,248,.3)" stroke-width="1.5"/>
+          <polygon points="298,41 306,45 298,49" fill="rgba(129,140,248,.3)"/>
+          <!-- Prediction output -->
+          <rect x="306" y="20" width="100" height="50" rx="6" fill="rgba(6,182,212,.08)" stroke="rgba(6,182,212,.2)" stroke-width="1"/>
+          <text x="356" y="40" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="#06B6D4">Risk Score</text>
+          <text x="356" y="54" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="rgba(6,182,212,.5)">HIGH / LOW</text>
+          <!-- Arrow -->
+          <line x1="408" y1="45" x2="436" y2="45" stroke="rgba(6,182,212,.3)" stroke-width="1.5"/>
+          <polygon points="436,41 444,45 436,49" fill="rgba(6,182,212,.3)"/>
+          <!-- Flask UI -->
+          <rect x="444" y="20" width="130" height="50" rx="6" fill="rgba(6,182,212,.06)" stroke="rgba(6,182,212,.15)" stroke-width="1"/>
+          <text x="509" y="40" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9" fill="rgba(6,182,212,.7)">Flask Web App</text>
+          <text x="509" y="54" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8" fill="rgba(6,182,212,.4)">+ BMI Counseling</text>
+          <!-- animated dot -->
+          <circle r="3.5" fill="#f472b6" opacity=".85">
+            <animateMotion dur="3.5s" repeatCount="indefinite">
+              <mpath href="#strokepipe"/>
+            </animateMotion>
+          </circle>
+          <path id="strokepipe" d="M20,45 L580,45" fill="none"/>
+        </svg>
+      </div>
+      <div class="project-header">
+        <span class="project-name">Brain Stroke Prediction System</span>
+        <div class="project-links"><a href="https://github.com/Harsha85018/Brain-Stroke-Prediction">GitHub ↗</a></div>
+      </div>
+      <p class="project-desc">ML-powered web application for early stroke risk assessment. Trained a Decision Tree classifier on a healthcare dataset using SMOTE for class imbalance, with features including age, BMI, glucose levels, and hypertension history. Deployed as a Flask app with an interactive prediction interface, BMI calculator, and health counseling section.</p>
+      <div class="project-tags">
+        <span class="tag pink">Scikit-learn</span><span class="tag pink">Decision Tree</span><span class="tag pink">SMOTE</span><span class="tag">Flask</span><span class="tag">Pandas</span><span class="tag">Python</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ SKILLS ═══════════════════ -->
+<section id="skills">
+  <p class="section-label fade-in">03 — Skills</p>
+  <h2 class="section-title fade-in fd1">Tech stack</h2>
+  <p class="section-sub fade-in fd2">Tools and technologies I work with regularly.</p>
+  <div class="skills-grid fade-in fd1">
+    <div class="skill-group">
+      <div class="sg-icon" style="background:rgba(6,182,212,.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+      </div>
+      <p class="skill-group-title">Languages</p>
+      <div>
+        <div class="skill-item">Python</div>
+        <div class="skill-item">SQL</div>
+        <div class="skill-item">R</div>
+        <div class="skill-item">C / C++</div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="sg-icon" style="background:rgba(129,140,248,.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <p class="skill-group-title">ML / AI</p>
+      <div>
+        <div class="skill-item">LangChain / LangGraph</div>
+        <div class="skill-item">Hugging Face</div>
+        <div class="skill-item">LoRA / QLoRA</div>
+        <div class="skill-item">RAG / FAISS</div>
+        <div class="skill-item">scikit-learn</div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="sg-icon" style="background:rgba(6,182,212,.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+      </div>
+      <p class="skill-group-title">Databases</p>
+      <div>
+        <div class="skill-item">PostgreSQL / MySQL</div>
+        <div class="skill-item">MongoDB</div>
+        <div class="skill-item">Neo4j</div>
+        <div class="skill-item">BigQuery</div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="sg-icon" style="background:rgba(244,114,182,.08)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <p class="skill-group-title">Data Engineering</p>
+      <div>
+        <div class="skill-item">PySpark / Spark</div>
+        <div class="skill-item">Apache Airflow</div>
+        <div class="skill-item">BigQuery</div>
+        <div class="skill-item">Hadoop</div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="sg-icon" style="background:rgba(129,140,248,.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.5"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+      </div>
+      <p class="skill-group-title">Infrastructure</p>
+      <div>
+        <div class="skill-item">Docker / Kubernetes</div>
+        <div class="skill-item">Git / GitHub</div>
+        <div class="skill-item">Google Cloud</div>
+        <div class="skill-item">Streamlit / Flask</div>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="sg-icon" style="background:rgba(6,182,212,.1)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <p class="skill-group-title">Analytics</p>
+      <div>
+        <div class="skill-item">Power BI</div>
+        <div class="skill-item">Pandas / NumPy</div>
+        <div class="skill-item">ggplot2</div>
+        <div class="skill-item">Matplotlib</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ EXPERIENCE ═══════════════════ -->
+<section id="experience">
+  <p class="section-label fade-in">04 — Experience</p>
+  <h2 class="section-title fade-in fd1">Internships</h2>
+  <p class="section-sub fade-in fd2">Industry experience in applied ML and data science.</p>
+  <div class="timeline fade-in">
+    <div class="timeline-item">
+      <p class="timeline-period">Sep 2023 — Dec 2023</p>
+      <p class="timeline-role">Data Science Intern</p>
+      <p class="timeline-org">Zummit Infolabs — Bangalore, India</p>
+      <ul class="timeline-points">
+        <li>Built NLP and Computer Vision pipelines for recruitment automation and car scratch detection, reducing manual screening time by 30%</li>
+        <li>Designed deep learning prototypes for emotion sincerity detection and autopilot systems using Python and OpenCV, improving model inference speed by 20%</li>
+        <li>Accelerated model iteration across 3+ AI use cases through feature engineering, SMOTE balancing, and evaluation optimization</li>
+      </ul>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-period">Aug 2023 — Sep 2023</p>
+      <p class="timeline-role">Data Science Intern</p>
+      <p class="timeline-org">TechnoHacks — Bangalore, India</p>
+      <ul class="timeline-points">
+        <li>Processed 10K+ records for churn prediction, housing price estimation, and sentiment analysis using EDA and predictive modeling in Python</li>
+        <li>Reduced model error rates by 15% through regression, classification, and NLP pipeline tuning with optimized feature selection</li>
+        <li>Built Python-based dashboards to track model performance metrics across 3 data science projects</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ EDUCATION ═══════════════════ -->
+<section id="education">
+  <p class="section-label fade-in">05 — Education</p>
+  <h2 class="section-title fade-in fd1">Education</h2>
+  <p class="section-sub fade-in fd2">Academic background in data science and computer science.</p>
+  <div class="timeline fade-in">
+    <div class="timeline-item">
+      <p class="timeline-period">Aug 2024 — May 2026</p>
+      <p class="timeline-role">Master of Science in Data Science</p>
+      <p class="timeline-org">Indiana University Bloomington — Luddy School</p>
+      <ul class="timeline-points">
+        <li>GPA 3.57 / 4.00 — graduated May 2026</li>
+        <li>Coursework: Algorithms, Advanced Databases, Applied DB Technologies, Data Mining, Information Visualization, EDA, Big Data Management, HCI, Network Security</li>
+        <li>Built 3 end-to-end AI/ML systems — RAG pipeline, fine-tuned LLM, and an agentic data analyst — as independent projects during the program</li>
+      </ul>
+    </div>
+    <div class="timeline-item">
+      <p class="timeline-period">Dec 2020 — May 2024</p>
+      <p class="timeline-role">Bachelor of Engineering — Computer Science</p>
+      <p class="timeline-org">Sri Venkateshwara College of Engineering, Bangalore — VTU</p>
+      <ul class="timeline-points">
+        <li>CGPA 8.55 / 10</li>
+        <li>Coursework: Data Structures, Algorithms, OOP, DBMS, OS, AI &amp; ML, Big Data Analytics, NoSQL, IoT</li>
+        <li>Final year specialization in Artificial Intelligence and Machine Learning</li>
+        <li>1st place — TechEdon 2.0 Hackathon: built FinIt, a smart budgeting and expense tracking app</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ RESUME ═══════════════════ -->
+<section id="resume">
+  <p class="section-label fade-in">06 — Resume</p>
+  <h2 class="section-title fade-in fd1">Resume</h2>
+  <p class="section-sub fade-in fd2">Download or view my latest resume.</p>
+  <div class="resume-box fade-in fd1">
+    <div class="resume-preview">
+      <div class="resume-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div class="resume-info">
+        <p class="resume-name">Harshavardhan_Kaditham_Resume.pdf</p>
+        <p class="resume-meta">AI/ML Engineer · Updated 2026</p>
+      </div>
+    </div>
+    <div class="resume-actions">
+      <a href="Harshavardhan_Kaditham_Resume.pdf" class="btn btn-primary" download>↓ Download</a>
+      <a href="Harshavardhan_Kaditham_Resume.pdf" class="btn btn-ghost">View ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CONTACT ═══════════════════ -->
+<section id="contact">
+  <p class="section-label fade-in">07 — Contact</p>
+  <h2 class="section-title fade-in fd1">Let's connect</h2>
+  <p class="section-sub fade-in fd2">Open to AI/ML Engineer and Data Science roles. Feel free to reach out.</p>
+  <div class="contact-grid fade-in fd1">
+    <a href="mailto:kharsha9990@gmail.com" class="contact-item">
+      <div class="ci-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></div>
+      <div><p class="ci-label">Email</p><p class="ci-value">kharsha9990@gmail.com</p></div>
+    </a>
+    <a href="tel:+19309042942" class="contact-item">
+      <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.9a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+      <div><p class="ci-label">Phone</p><p class="ci-value">+1 930-904-2942</p></div>
+    </a>
+    <a href="https://linkedin.com/in/harsha-kaditham/" class="contact-item">
+      <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+      <div><p class="ci-label">LinkedIn</p><p class="ci-value">harsha-kaditham</p></div>
+    </a>
+    <a href="https://github.com/Harsha85018" class="contact-item">
+      <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+      <div><p class="ci-label">GitHub</p><p class="ci-value">Harsha85018</p></div>
+    </a>
+  </div>
+</section>
+
+<footer>built by harshavardhan reddy kaditham &nbsp;·&nbsp; 2026</footer>
+
+<script>
+/* PARTICLE BG */
+const c=document.getElementById('bg-canvas');
+const cx=c.getContext('2d');
+let W,H,pts=[];
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<70;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.2+.3,o:Math.random()*.35+.08});
+(function draw(){
+  cx.clearRect(0,0,W,H);
+  pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);cx.fillStyle=`rgba(6,182,212,${p.o})`;cx.fill()});
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<110){cx.beginPath();cx.moveTo(pts[i].x,pts[i].y);cx.lineTo(pts[j].x,pts[j].y);cx.strokeStyle=`rgba(6,182,212,${.05*(1-d/110)})`;cx.lineWidth=.5;cx.stroke()}}
+  requestAnimationFrame(draw);
+})();
+
+/* TYPEWRITER */
+const roles=['AI/ML Engineer','LLM Systems Builder','Agentic AI Developer','Data Scientist'];
+let ri=0,ci=0,del=false;
+const tel=document.getElementById('typed-text');
+function type(){
+  const cur=roles[ri];
+  if(!del){tel.textContent=cur.slice(0,++ci);if(ci===cur.length){del=true;setTimeout(type,1800);return}setTimeout(type,75)}
+  else{tel.textContent=cur.slice(0,--ci);if(ci===0){del=false;ri=(ri+1)%roles.length;setTimeout(type,300);return}setTimeout(type,38)}
+}
+setTimeout(type,1500);
+
+/* SCROLL */
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1});
+document.querySelectorAll('.fade-in,.timeline-item').forEach(el=>obs.observe(el));
+window.addEventListener('scroll',()=>document.getElementById('main-nav').classList.toggle('scrolled',scrollY>40));
+
+/* CARD MOUSE GLOW */
+document.querySelectorAll('.project-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',(e.clientX-r.left)+'px');card.style.setProperty('--my',(e.clientY-r.top)+'px')});
+});
+document.querySelectorAll('.project-links a').forEach(link=>{
+  link.addEventListener('click',function(e){
+    e.stopPropagation();
+    window.location.href=this.getAttribute('href');
+  });
+});
+</script>
+</body>
+</html>
